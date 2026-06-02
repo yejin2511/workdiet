@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>업무 다이어트 인터뷰 v3 | 경영지원실</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #F7F6F2;
+      --surface: #FFFFFF;
+      --surface2: #F0EEE8;
+      --border: #E0DDD4;
+      --border2: #C8C4B8;
+      --text: #1A1917;
+      --text2: #6B6860;
+      --text3: #A09D96;
+      --accent: #1A1917;
+      --danger-bg: #FEF0EC;
+      --danger-border: #F5C4B3;
+      --danger-text: #8B3A1F;
+      --warn-bg: #FEF8EC;
+      --warn-border: #FAD99A;
+      --warn-text: #7A4F0A;
+      --ok-bg: #EEF6E6;
+      --ok-border: #C0DD97;
+      --ok-text: #3B6D11;
+      --radius: 10px;
+      --radius-sm: 6px;
+    }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    .logo span {
+      color: var(--text3);
+      font-weight: 400;
+    }
+
+    .progress-wrap {
+      margin-bottom: 2rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.5s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .progress-label {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 6px;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .screen-label {
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .screen-title {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .screen-sub {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .notice-box {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 1.5rem;
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    .notice-box strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 15px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.15s;
+      margin-bottom: 1rem;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="text"]:focus,
+    select:focus {
+      border-color: var(--accent);
+    }
+
+    input[type="text"]::placeholder {
+      color: var(--text3);
+    }
+
+    .select-wrap {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .select-wrap select {
+      margin-bottom: 0;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      pointer-events: none;
+      font-size: 13px;
+    }
+
+    label.field-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: -0.01em;
+      transition: opacity 0.15s;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.85;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.28;
+      cursor: not-allowed;
+    }
+
+    .btn-ghost {
+      padding: 13px 20px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface2);
+      border-color: var(--border2);
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .tab-btn {
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--text2);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--border2);
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .cat-block {
+      margin-bottom: 1.25rem;
+    }
+
+    .cat-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text3);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text2);
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .check-item:hover {
+      border-color: var(--border2);
+      color: var(--text);
+    }
+
+    .check-item.checked {
+      border-color: var(--accent);
+      background: var(--surface2);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .check-box {
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--border2);
+      border-radius: 3px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      transition: all 0.15s;
+    }
+
+    .check-item.checked .check-box {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.25rem 0;
+    }
+
+    .task-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .task-row input {
+      margin: 0;
+      flex: 1;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1rem;
+      min-height: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text2);
+    }
+
+    .chip-x {
+      cursor: pointer;
+      color: var(--text3);
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .chip-x:hover {
+      color: var(--text);
+    }
+
+    .selected-count {
+      font-size: 12px;
+      color: var(--ok-text);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .opts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 1.25rem;
+    }
+
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text);
+      text-align: left;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .opt:hover {
+      border-color: var(--border2);
+      background: var(--surface2);
+    }
+
+    .opt.sel {
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .opt .em {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-sm);
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .opt.sel .em {
+      background: var(--accent);
+    }
+
+    .q-block {
+      margin-bottom: 1.25rem;
+    }
+
+    .q-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .int-task-name {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .int-task-idx {
+      font-size: 12px;
+      color: var(--text3);
+      margin-bottom: 14px;
+    }
+
+    .result-header {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .result-header-name {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .result-header-sub {
+      font-size: 13px;
+      color: var(--text2);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-card {
+      padding: 14px 12px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid;
+      text-align: center;
+    }
+
+    .summary-card .num {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .summary-card .lbl {
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .summary-card.danger {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+      color: var(--danger-text);
+    }
+
+    .summary-card.warn {
+      background: var(--warn-bg);
+      border-color: var(--warn-border);
+      color: var(--warn-text);
+    }
+
+    .summary-card.ok {
+      background: var(--ok-bg);
+      border-color: var(--ok-border);
+      color: var(--ok-text);
+    }
+
+    .task-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    .task-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .task-card-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .verdict-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1.5px solid;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .verdict-badge.danger {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+      color: var(--danger-text);
+    }
+
+    .verdict-badge.warn {
+      background: var(--warn-bg);
+      border-color: var(--warn-border);
+      color: var(--warn-text);
+    }
+
+    .verdict-badge.ok {
+      background: var(--ok-bg);
+      border-color: var(--ok-border);
+      color: var(--ok-text);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      background: var(--surface2);
+    }
+
+    .reason-text {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 1.5rem;
+    }
+
+    .action-row .btn-primary,
+    .action-row .btn-ghost {
+      flex: 1;
+    }
+
+    .foot-notice {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-top: 12px;
+    }
+
+    /* 제출 상태 */
+    .submit-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      margin-top: 12px;
+      border: 1.5px solid;
+    }
+
+    .submit-status.loading {
+      background: var(--surface2);
+      border-color: var(--border);
+      color: var(--text2);
+    }
+
+    .submit-status.success {
+      background: var(--ok-bg);
+      border-color: var(--ok-border);
+      color: var(--ok-text);
+    }
+
+    .submit-status.error {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+      color: var(--danger-text);
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--border2);
+      border-top-color: var(--text2);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* 설정 안내 배너 */
+    .setup-banner {
+      background: #FEF8EC;
+      border: 1.5px solid #FAD99A;
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 1.5rem;
+      font-size: 13px;
+      color: #7A4F0A;
+      line-height: 1.7;
+    }
+
+    .setup-banner strong {
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <div class="top-bar">
+      <div class="logo">DB GlobalChip <span>· 경영지원실</span></div>
+      <div style="font-size:12px;color:var(--text3);">업무 다이어트 파일럿</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" id="prog" style="width:0%"></div>
+      </div>
+      <div class="progress-label" id="prog-label">시작 전</div>
+    </div>
+
+    <!-- S0: 기본정보 -->
+    <div class="screen active" id="s0">
+      <div class="screen-label">Step 01</div>
+      <div class="screen-title">안녕하세요!<br>기본 정보를 입력해주세요.</div>
+      <div class="screen-sub">입력하신 내용은 HR 취합 용도로만 사용됩니다. 평가와 무관합니다 :)</div>
+      <label class="field-label">이름</label>
+      <input type="text" id="inp-name" placeholder="예: 홍길동" />
+      <label class="field-label">부서명</label>
+      <div class="select-wrap">
+        <select id="sel-dept">
+          <option value="">부서를 선택해주세요</option>
+          <option value="재무관리팀">재무관리팀</option>
+          <option value="피플팀">피플팀</option>
+          <option value="IT파트">IT파트</option>
+        </select>
+      </div>
+      <label class="field-label">직무</label>
+      <div class="select-wrap">
+        <select id="sel-job" disabled>
+          <option value="">부서 선택 후 직무를 선택해주세요</option>
+        </select>
+      </div>
+      <button class="btn-primary" id="btn-s0" disabled>다음 →</button>
+    </div>
+
+    <!-- S1: 체크리스트 -->
+    <div class="screen" id="s1">
+      <div class="screen-label">Step 02</div>
+      <div class="screen-title">내 업무를 골라주세요.</div>
+      <div class="notice-box">
+        <strong>💡 업무 쪼개기 기준</strong><br>
+        "이건 없애거나 줄일 수 있을 것 같은데?" 라는 생각이 드는 단위로만 쪼개주세요.<br>
+        잘 모르겠으면 큰 단위로 체크하고 메모란에 "세부내용 있음"이라고 적어주세요.<br>
+        <strong>법적·필수 업무도 반드시 포함해서 체크해주세요.</strong>
+      </div>
+      <div class="tab-bar" id="tab-bar"></div>
+      <div id="tab-panels"></div>
+      <div class="divider"></div>
+      <div class="q-label" style="margin-bottom:8px;">목록에 없는 업무는 직접 추가해주세요.</div>
+      <div class="task-row">
+        <input type="text" id="inp-task" placeholder="업무명 직접 입력 후 Enter 또는 추가"
+          onkeydown="if(event.key==='Enter')addTask()" style="margin:0;" />
+        <button class="btn-ghost" onclick="addTask()">+ 추가</button>
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="selected-count" id="sel-count">0개 선택됨</div>
+      <button class="btn-primary" id="btn-s1" onclick="startInterview()" disabled>인터뷰 시작 →</button>
+    </div>
+
+    <!-- S2: 인터뷰 -->
+    <div class="screen" id="s2">
+      <div class="screen-label">Step 03 · 업무 인터뷰</div>
+      <div class="int-task-name" id="int-name"></div>
+      <div class="int-task-idx" id="int-idx"></div>
+      <div class="divider"></div>
+      <div class="q-block">
+        <div class="q-label">주기가 어떻게 되나요?</div>
+        <div class="opts" id="opts-period">
+          <button class="opt" data-k="period" data-v="매일" onclick="pick(this)"><span class="em">📅</span>매일</button>
+          <button class="opt" data-k="period" data-v="매주" onclick="pick(this)"><span class="em">📅</span>매주</button>
+          <button class="opt" data-k="period" data-v="매월" onclick="pick(this)"><span class="em">📅</span>매월</button>
+          <button class="opt" data-k="period" data-v="수시/불규칙" onclick="pick(this)"><span class="em">📅</span>수시 /
+            불규칙</button>
+        </div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">한 번 할 때 얼마나 걸리나요?</div>
+        <div class="opts" id="opts-time">
+          <button class="opt" data-k="time" data-v="30분 미만" onclick="pick(this)"><span class="em">⚡</span>30분
+            미만</button>
+          <button class="opt" data-k="time" data-v="30분~1시간" onclick="pick(this)"><span class="em">🕐</span>30분 ~
+            1시간</button>
+          <button class="opt" data-k="time" data-v="1~3시간" onclick="pick(this)"><span class="em">🕒</span>1 ~
+            3시간</button>
+          <button class="opt" data-k="time" data-v="3시간 이상" onclick="pick(this)"><span class="em">🕔</span>3시간
+            이상</button>
+        </div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">한 달에 몇 번 하나요?</div>
+        <div class="opts" id="opts-freq">
+          <button class="opt" data-k="freq" data-v="월 1회" onclick="pick(this)"><span class="em">1️⃣</span>월 1회</button>
+          <button class="opt" data-k="freq" data-v="월 2~4회" onclick="pick(this)"><span class="em">2️⃣</span>월
+            2~4회</button>
+          <button class="opt" data-k="freq" data-v="월 5회 이상" onclick="pick(this)"><span class="em">🔢</span>월 5회
+            이상</button>
+          <button class="opt" data-k="freq" data-v="수시" onclick="pick(this)"><span class="em">🔄</span>수시</button>
+        </div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">이 업무가 중요한 이유는?</div>
+        <div class="opts" id="opts-importance">
+          <button class="opt" data-k="importance" data-v="법적·규정 의무" onclick="pick(this)"><span class="em">⚖️</span>법적·규정
+            의무라서</button>
+          <button class="opt" data-k="importance" data-v="경영·사업 직접 영향" onclick="pick(this)"><span
+              class="em">📊</span>경영·사업에 직접 영향이라서</button>
+          <button class="opt" data-k="importance" data-v="내부 운영 필요" onclick="pick(this)"><span class="em">⚙️</span>내부
+            운영에 필요해서</button>
+          <button class="opt" data-k="importance" data-v="크게 중요하지 않음" onclick="pick(this)"><span class="em">💭</span>크게
+            중요하지 않음</button>
+        </div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">이 업무, 왜 하나요?</div>
+        <div class="opts" id="opts-why">
+          <button class="opt" data-k="why" data-v="윗분 지시" onclick="pick(this)"><span class="em">👆</span>윗분 지시</button>
+          <button class="opt" data-k="why" data-v="내가 필요해서" onclick="pick(this)"><span class="em">💡</span>내가
+            필요해서</button>
+          <button class="opt" data-k="why" data-v="원래부터 해왔음" onclick="pick(this)"><span class="em">🔁</span>원래부터
+            해왔음</button>
+          <button class="opt" data-k="why" data-v="모르겠음" onclick="pick(this)"><span class="em">🤷</span>모르겠음</button>
+        </div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">솔직히, 없애도 될까요?</div>
+        <div class="opts" id="opts-keep">
+          <button class="opt" data-k="keep" data-v="없애도 됨" onclick="pick(this)"><span class="em">🗑️</span>없애도
+            됨</button>
+          <button class="opt" data-k="keep" data-v="줄일 수 있음" onclick="pick(this)"><span class="em">✂️</span>줄일 수
+            있음</button>
+          <button class="opt" data-k="keep" data-v="꼭 필요함" onclick="pick(this)"><span class="em">✅</span>꼭 필요함</button>
+        </div>
+      </div>
+      <button class="btn-primary" id="btn-s2" onclick="nextTask()" disabled>다음 →</button>
+    </div>
+
+    <!-- S3: 결과 + 제출 -->
+    <div class="screen" id="s3">
+      <div class="screen-label">완료</div>
+      <div class="result-header">
+        <div class="result-header-name" id="res-name"></div>
+        <div class="result-header-sub" id="res-date"></div>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-card danger">
+          <div class="num" id="cnt-discard">0</div>
+          <div class="lbl">버리기 검토</div>
+        </div>
+        <div class="summary-card warn">
+          <div class="num" id="cnt-reduce">0</div>
+          <div class="lbl">축소 검토</div>
+        </div>
+        <div class="summary-card ok">
+          <div class="num" id="cnt-keep">0</div>
+          <div class="lbl">유지</div>
+        </div>
+      </div>
+      <div id="result-list"></div>
+      <div class="action-row">
+        <button class="btn-primary" id="btn-submit" onclick="submitToSheet()">📤 HR에 제출</button>
+        <button class="btn-ghost" onclick="copyTSV()">📋 엑셀 복사</button>
+      </div>
+      <div id="submit-status-area"></div>
+      <div style="margin-top:10px;">
+        <button class="btn-ghost" style="width:100%;margin-top:4px;" onclick="restart()">↩ 다시 작성</button>
+      </div>
+      <div class="foot-notice" style="margin-top:12px;">
+        ※ <strong>HR에 제출</strong> 버튼을 누르면 구글 시트에 자동 저장됩니다.<br>
+        ※ 구글 시트 연동이 안 될 경우 엑셀 복사로 HR에 전달해주세요.<br>
+        ※ 법적·규정 의무 업무는 버리기 대상에서 자동 제외됩니다.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ★★★ 여기에 Apps Script 배포 URL을 붙여넣으세요 ★★★
+    var SCRIPT_URL = 'https://script.google.com/a/macros/dbglobalchip.com/s/AKfycbyY_ZUB0_EjN5KKCvrR8bI-IPf1mgilnjrxWmc3nzvf8gLGOPGMh4jMNcggCJDKTBBbnw/exec';
+    // 예시: 'https://script.google.com/macros/s/AKfy.../exec'
+
+    var userName = '', userDept = '', userJob = '';
+    var tasks = [], taskIdx = 0, cur = {}, results = [];
+    var checkedItems = {}, customTasks = [];
+
+    var DEPT_JOBS = {
+      '재무관리팀': ['회계', '자금/예산', '경영기획', '법무'],
+      '피플팀': ['인사', '채용', '교육', '급여/근태', '총무', '전산기기'],
+      'IT파트': ['시스템인프라', 'IT보안', '시스템운영']
+    };
+
+    var CHECKLIST = {
+      '재무관리팀': {
+        '회계': [
+          { cat: '전표/결산', items: ['전표 처리 및 승인', '월/분기/연간 결산', '원가 계산 및 분석', '계정과목 관리'] },
+          { cat: '보고', items: ['재무제표 작성', '경영진 재무보고', '세금계산서 발행·관리'] },
+          { cat: '감사/규정', items: ['외부감사 대응', '내부통제 점검', '회계기준 검토'] }
+        ],
+        '자금/예산': [
+          { cat: '자금', items: ['일일 자금 현황 관리', '입출금 처리', '금융기관 대응', '외환 관리'] },
+          { cat: '예산', items: ['연간 예산 편성', '예산 집행 모니터링', '예실 차이 분석', '부서별 예산 배분'] }
+        ],
+        '경영기획': [
+          { cat: '기획/분석', items: ['경영실적 분석', 'KPI 관리 및 보고', '중장기 경영계획 수립', '사업계획 수립 지원'] },
+          { cat: '보고', items: ['이사회 보고자료 작성', 'CEO/CFO 보고', '경쟁사 벤치마킹'] }
+        ],
+        '법무': [
+          { cat: '계약', items: ['계약서 검토 및 작성', '계약 관리 대장 유지', 'NDA 관리'] },
+          { cat: '법적 대응', items: ['소송/분쟁 관리', '법률 자문 요청', '규제 변경사항 모니터링', '컴플라이언스 점검'] }
+        ]
+      },
+      '피플팀': {
+        '인사': [
+          { cat: '평가/보상', items: ['평가 공지 및 운영', '평가자 시스템 매칭', '중간점검 면담 운영', '평가 결과 CFO보고', '인사위원회 운영'] },
+          { cat: '인사관리', items: ['인사발령 처리', '조직도 관리', '인사기록 관리', '퇴직 처리'] },
+          { cat: '보고/분석', items: ['인력 현황 보고', 'HR Monthly Report', '인건비 분석'] }
+        ],
+        '채용': [
+          { cat: '채용운영', items: ['채용공고 작성 및 게시', '서류 심사', '면접 일정 조율', '합격 통보 및 입사 안내'] },
+          { cat: '채용관리', items: ['채용 플랫폼 관리', '채용 현황 트래킹', '헤드헌터 관리'] }
+        ],
+        '교육': [
+          { cat: '교육운영', items: ['교육 수요조사', '교육 일정 수립', '강사/외부기관 섭외', '교육 운영 및 진행', '교육 결과 보고'] },
+          { cat: '교육관리', items: ['법정의무교육 관리', '교육이력 관리', 'CDP 관리'] }
+        ],
+        '급여/근태': [
+          { cat: '급여', items: ['월 급여 계산 및 지급', '급여명세서 발송', '연말정산 운영', '퇴직금 정산'] },
+          { cat: '근태', items: ['근태 데이터 취합', '지각/결근 관리', '연차 관리', '탄력근무 운영'] },
+          { cat: '4대보험', items: ['4대보험 신고 및 납부', '입퇴사 신고', '보험료 정산'] }
+        ],
+        '총무': [
+          { cat: '시설/비품', items: ['사무용품 구매 및 관리', '시설 관리 및 수선', '차량 관리'] },
+          { cat: '행사/복리후생', items: ['사내 행사 기획 및 운영', '복리후생 운영', '경조사 처리', '명절선물 운영'] },
+          { cat: '행정', items: ['우편물 발송/수령', '보안 관리', '문서 수발신'] }
+        ],
+        '전산기기': [
+          { cat: '기기관리', items: ['PC/노트북 배포 및 회수', '기기 고장 접수 및 처리', '소모품 관리', '자산 대장 관리'] },
+          { cat: '지원', items: ['신규 입사자 기기 세팅', '원격 지원', '기기 교체 주기 관리'] }
+        ]
+      },
+      'IT파트': {
+        '시스템인프라': [
+          { cat: '서버/네트워크', items: ['서버 운영 및 모니터링', '네트워크 장비 관리', '백업 관리', '장애 대응'] },
+          { cat: '관리', items: ['인프라 용량 계획', '벤더 관리', '유지보수 계약 관리'] }
+        ],
+        'IT보안': [
+          { cat: '보안운영', items: ['보안 솔루션 운영', '취약점 점검', '보안 인시던트 대응', '접근권한 관리'] },
+          { cat: '교육/감사', items: ['임직원 보안교육', '보안감사 대응', '개인정보보호 운영', '보안정책 업데이트'] }
+        ],
+        '시스템운영': [
+          { cat: '시스템', items: ['ERP/그룹웨어 운영', '사용자 계정 관리', '시스템 패치 관리', '장애 처리 및 보고'] },
+          { cat: '개발/개선', items: ['기능 개선 요구사항 수집', '개발사 커뮤니케이션', '테스트 및 배포', '운영 매뉴얼 관리'] }
+        ]
+      }
+    };
+
+    // S0
+    var selDept = document.getElementById('sel-dept');
+    var selJob = document.getElementById('sel-job');
+    var inpName = document.getElementById('inp-name');
+    function checkS0() { document.getElementById('btn-s0').disabled = !(inpName.value.trim() && selDept.value && selJob.value); }
+    inpName.addEventListener('input', checkS0);
+    selDept.addEventListener('change', function () {
+      userDept = this.value;
+      selJob.innerHTML = '<option value="">직무를 선택해주세요</option>';
+      selJob.disabled = !this.value;
+      if (this.value && DEPT_JOBS[this.value]) {
+        DEPT_JOBS[this.value].forEach(function (j) { var o = document.createElement('option'); o.value = j; o.textContent = j; selJob.appendChild(o); });
+      }
+      checkS0();
+    });
+    selJob.addEventListener('change', checkS0);
+    document.getElementById('btn-s0').addEventListener('click', function () {
+      userName = inpName.value.trim(); userDept = selDept.value; userJob = selJob.value;
+      buildChecklist(); showScreen(1);
+    });
+
+    function buildChecklist() {
+      checkedItems = {}; customTasks = [];
+      var tabBar = document.getElementById('tab-bar');
+      var tabPanels = document.getElementById('tab-panels');
+      tabBar.innerHTML = ''; tabPanels.innerHTML = '';
+      var deptData = CHECKLIST[userDept] || {};
+      var jobs = DEPT_JOBS[userDept] || [];
+      var tabJobs = [userJob].concat(jobs.filter(function (j) { return j !== userJob; }));
+      tabJobs.forEach(function (job, ti) {
+        var cats = deptData[job] || [];
+        if (!cats.length) return;
+        var btn = document.createElement('button');
+        btn.className = 'tab-btn' + (ti === 0 ? ' active' : '');
+        btn.textContent = (ti === 0 ? '★ ' : '') + job;
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+          document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+          btn.classList.add('active');
+          document.getElementById('panel-' + job).classList.add('active');
+        });
+        tabBar.appendChild(btn);
+        var panel = document.createElement('div');
+        panel.className = 'tab-panel' + (ti === 0 ? ' active' : '');
+        panel.id = 'panel-' + job;
+        cats.forEach(function (c) {
+          var block = document.createElement('div'); block.className = 'cat-block';
+          var title = document.createElement('div'); title.className = 'cat-title'; title.textContent = c.cat;
+          block.appendChild(title);
+          var grid = document.createElement('div'); grid.className = 'check-grid';
+          c.items.forEach(function (item) {
+            var key = job + '__' + item;
+            var el = document.createElement('label'); el.className = 'check-item';
+            el.innerHTML = '<span class="check-box"></span><span>' + escHtml(item) + '</span>';
+            el.addEventListener('click', function () {
+              if (checkedItems[key]) { delete checkedItems[key]; el.classList.remove('checked'); el.querySelector('.check-box').textContent = ''; }
+              else { checkedItems[key] = item; el.classList.add('checked'); el.querySelector('.check-box').textContent = '✓'; }
+              updateSelCount();
+            });
+            grid.appendChild(el);
+          });
+          block.appendChild(grid); panel.appendChild(block);
+        });
+        tabPanels.appendChild(panel);
+      });
+      updateSelCount();
+    }
+
+    function updateSelCount() {
+      var total = Object.keys(checkedItems).length + customTasks.length;
+      document.getElementById('sel-count').textContent = total + '개 선택됨';
+      document.getElementById('btn-s1').disabled = total === 0;
+      renderChips();
+    }
+    function addTask() {
+      var inp = document.getElementById('inp-task'); var val = inp.value.trim();
+      if (!val) return; customTasks.push(val); inp.value = ''; updateSelCount(); inp.focus();
+    }
+    function removeCustom(i) { customTasks.splice(i, 1); updateSelCount(); }
+    function renderChips() {
+      document.getElementById('chips').innerHTML = customTasks.map(function (t, i) {
+        return '<span class="chip">' + escHtml(t) + '<span class="chip-x" onclick="removeCustom(' + i + ')">×</span></span>';
+      }).join('');
+    }
+
+    function startInterview() {
+      tasks = Object.values(checkedItems).concat(customTasks);
+      taskIdx = 0; results = []; loadTask(); showScreen(2);
+    }
+    function loadTask() {
+      cur = { period: '', time: '', freq: '', importance: '', why: '', keep: '' };
+      ['period', 'time', 'freq', 'importance', 'why', 'keep'].forEach(function (k) {
+        document.querySelectorAll('[data-k="' + k + '"]').forEach(function (b) { b.classList.remove('sel'); });
+      });
+      document.getElementById('btn-s2').disabled = true;
+      document.getElementById('btn-s2').textContent = taskIdx < tasks.length - 1 ? '다음 업무 →' : '결과 보기 →';
+      document.getElementById('int-name').textContent = tasks[taskIdx];
+      document.getElementById('int-idx').textContent = (taskIdx + 1) + ' / ' + tasks.length + '번째 업무';
+      var pct = 20 + Math.round((taskIdx / tasks.length) * 60);
+      document.getElementById('prog').style.width = pct + '%';
+      document.getElementById('prog-label').textContent = '업무 ' + (taskIdx + 1) + ' / ' + tasks.length + ' 인터뷰 중';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function pick(btn) {
+      var k = btn.dataset.k;
+      document.querySelectorAll('[data-k="' + k + '"]').forEach(function (b) { b.classList.remove('sel'); });
+      btn.classList.add('sel'); cur[k] = btn.dataset.v;
+      var ok = cur.period && cur.time && cur.freq && cur.importance && cur.why && cur.keep;
+      document.getElementById('btn-s2').disabled = !ok;
+    }
+    function nextTask() {
+      results.push({ task: tasks[taskIdx], period: cur.period, time: cur.time, freq: cur.freq, importance: cur.importance, why: cur.why, keep: cur.keep });
+      if (taskIdx < tasks.length - 1) { taskIdx++; loadTask(); } else { showResult(); }
+    }
+
+    function verdict(r) {
+      if (r.importance === '법적·규정 의무') return 'keep';
+      if (r.keep === '없애도 됨') return 'discard';
+      if (r.keep === '줄일 수 있음') return 'reduce';
+      return 'keep';
+    }
+    function verdictLabel(v) { return v === 'discard' ? '버리기 검토' : v === 'reduce' ? '축소 검토' : '유지'; }
+    function reasonText(r) {
+      var v = verdict(r);
+      if (r.importance === '법적·규정 의무') return '법적·규정 의무 업무 — 버리기 대상 제외, 방식 효율화만 검토';
+      if (v === 'discard') {
+        if (r.why === '모르겠음') return '이유를 모른 채 수행 중이며 본인도 불필요하다고 판단 — 즉시 검토 권장';
+        if (r.why === '원래부터 해왔음') return '관성으로 해온 업무이며 본인도 불필요하다고 판단 — 우선 검토 대상';
+        return '본인이 없애도 된다고 판단 — HR과 함께 폐지 여부 검토';
+      }
+      if (v === 'reduce') {
+        if (r.importance === '크게 중요하지 않음') return '중요도 낮고 줄일 여지 있음 — 주기·방식 개선 논의 필요';
+        if (r.time === '3시간 이상' || r.time === '1~3시간') return '시간 부담이 크지만 줄일 여지 있음 — 자동화·간소화 방안 검토';
+        return '본인이 줄일 수 있다고 판단 — 방식 개선 논의 필요';
+      }
+      if (r.why === '원래부터 해왔음') return '관행이지만 본인이 꼭 필요하다고 판단 — HR 확인 후 유지';
+      if (r.why === '모르겠음') return '이유는 불명확하나 필요하다고 판단 — 목적 명확화 필요';
+      return '명확한 목적이 있는 필수 업무';
+    }
+
+    function showResult() {
+      document.getElementById('res-name').textContent = userName + ' · ' + userDept + ' ' + userJob;
+      var now = new Date();
+      document.getElementById('res-date').textContent = now.getFullYear() + '.' + String(now.getMonth() + 1).padStart(2, '0') + '.' + String(now.getDate()).padStart(2, '0') + ' 작성 · 총 ' + results.length + '개 업무';
+      var disc = 0, red = 0, kp = 0;
+      results.forEach(function (r) { var v = verdict(r); if (v === 'discard') disc++; else if (v === 'reduce') red++; else kp++; });
+      document.getElementById('cnt-discard').textContent = disc;
+      document.getElementById('cnt-reduce').textContent = red;
+      document.getElementById('cnt-keep').textContent = kp;
+      document.getElementById('result-list').innerHTML = results.map(function (r) {
+        var v = verdict(r), cls = v === 'discard' ? 'danger' : v === 'reduce' ? 'warn' : 'ok';
+        return '<div class="task-card"><div class="task-card-top"><div class="task-card-name">' + escHtml(r.task) + '</div><span class="verdict-badge ' + cls + '">' + verdictLabel(v) + '</span></div><div class="tags"><span class="tag">' + r.period + '</span><span class="tag">' + r.time + '</span><span class="tag">' + r.freq + '</span><span class="tag">' + r.importance + '</span><span class="tag">' + r.why + '</span></div><div class="reason-text">' + reasonText(r) + '</div></div>';
+      }).join('');
+      document.getElementById('submit-status-area').innerHTML = '';
+      document.getElementById('btn-submit').disabled = false;
+      document.getElementById('btn-submit').textContent = '📤 HR에 제출';
+      showScreen(3);
+    }
+
+    // 구글 시트 제출
+    function submitToSheet() {
+      if (SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+        setStatus('error', '⚠️ HR 담당자가 아직 구글 시트 연동을 설정하지 않았습니다. 엑셀 복사 후 HR에 전달해주세요.');
+        return;
+      }
+      var btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = '제출 중...';
+      setStatus('loading', '<div class="spinner"></div> 구글 시트에 저장 중입니다...');
+
+      var rows = results.map(function (r) {
+        return {
+          name: userName, dept: userDept, job: userJob,
+          task: r.task, period: r.period, time: r.time, freq: r.freq,
+          importance: r.importance, why: r.why, keep: r.keep,
+          verdict: verdictLabel(verdict(r)), reason: reasonText(r)
+        };
+      });
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rows: rows })
+      }).then(function () {
+        setStatus('success', '✅ HR 시트에 제출 완료되었습니다! 수고하셨습니다 :)');
+        btn.textContent = '✓ 제출 완료';
+      }).catch(function (err) {
+        setStatus('error', '❌ 제출 실패. 엑셀 복사 후 HR에 전달해주세요. (오류: ' + err.message + ')');
+        btn.disabled = false;
+        btn.textContent = '📤 HR에 제출';
+      });
+    }
+
+    function setStatus(type, html) {
+      document.getElementById('submit-status-area').innerHTML = '<div class="submit-status ' + type + '">' + html + '</div>';
+    }
+
+    function copyTSV() {
+      var header = ['이름', '부서', '직무', '업무명', '주기', '1회 소요시간', '월 빈도', '중요한 이유', '왜 하나요', '없애도 될까요', 'HR 판정(초안)', '비고'].join('\t');
+      var rows = results.map(function (r) {
+        return [userName, userDept, userJob, r.task, r.period, r.time, r.freq, r.importance, r.why, r.keep, verdictLabel(verdict(r)), reasonText(r)].join('\t');
+      });
+      navigator.clipboard.writeText([header].concat(rows).join('\n')).then(function () {
+        var btn = document.querySelector('.action-row .btn-ghost');
+        btn.textContent = '✓ 복사 완료!';
+        setTimeout(function () { btn.textContent = '📋 엑셀 복사'; }, 3000);
+      }).catch(function () { alert('복사 실패. 브라우저 설정을 확인해주세요.'); });
+    }
+
+    function restart() {
+      userName = ''; userDept = ''; userJob = ''; tasks = []; taskIdx = 0; results = []; checkedItems = {}; customTasks = [];
+      inpName.value = ''; selDept.value = '';
+      selJob.innerHTML = '<option value="">부서 선택 후 직무를 선택해주세요</option>';
+      selJob.disabled = true;
+      document.getElementById('btn-s0').disabled = true;
+      showScreen(0);
+    }
+    function showScreen(n) {
+      ['s0', 's1', 's2', 's3'].forEach(function (id, i) { document.getElementById(id).classList.toggle('active', i === n); });
+      var pcts = [5, 20, 60, 100], lbls = ['기본 정보 입력', '업무 목록 작성', '업무별 인터뷰 진행 중', '완료'];
+      document.getElementById('prog').style.width = pcts[n] + '%';
+      document.getElementById('prog-label').textContent = lbls[n];
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  </script>
+</body>
+
+</html>
